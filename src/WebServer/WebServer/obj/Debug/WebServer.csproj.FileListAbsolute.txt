@@ -1,0 +1,8 @@
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\bin\Debug\WebServer.exe.config
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\obj\Debug\WebServer.csprojResolveAssemblyReference.cache
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\bin\Debug\WebServer.exe
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\bin\Debug\WebServer.pdb
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\obj\Debug\WebServer.exe
+C:\Users\Bill\nodejs\seismicimage\aspnet5-server\src\WebServer\WebServer\obj\Debug\WebServer.pdb
