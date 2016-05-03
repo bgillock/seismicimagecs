@@ -1,0 +1,285 @@
+---
+swagger: "2.0"
+info:
+  description: "Read seismic rendered on a plane"
+  version: "1.0.0"
+  title: "Seismic Renderer"
+host: "localhost:3001"
+basePath: "/seismic/v1"
+schemes:
+- "https"
+produces:
+- "application/json"
+paths:
+  /cubes:
+    get:
+      tags:
+      - "cubes"
+      summary: "Get a list of cubes"
+      description: "Returns a list of cubes."
+      operationId: "cubesGET"
+      parameters:
+      - name: "domain"
+        in: "query"
+        description: "Time or Depth"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "An array cube definitions"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Cube"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Cubes"
+  /cubes/{cubeId}:
+    get:
+      tags:
+      - "cubes"
+      summary: "Get cube definition"
+      description: "Get the meta definition of a cube"
+      operationId: "cubesCubeIdGET"
+      parameters:
+      - name: "cubeId"
+        in: "path"
+        description: "ID of cube"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Cube definition"
+          schema:
+            $ref: "#/definitions/Cube"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Cubes"
+  /cubes/{cubeId}/image:
+    get:
+      tags:
+      - "image"
+      summary: "Return a png file"
+      description: "Returns a png file rendered from seismic cube data at orientation,\
+        \ and with specified color nap and resolution"
+      operationId: "cubesCubeIdImageGET"
+      produces:
+      - "image/png"
+      parameters:
+      - name: "cubeId"
+        in: "path"
+        description: "ID of cube"
+        required: true
+        type: "string"
+      - name: "orientation"
+        in: "query"
+        description: "Inline, Crossline or Slice"
+        required: true
+        type: "string"
+      - name: "number"
+        in: "query"
+        description: "Inline, crossline or slice number to extract"
+        required: true
+        type: "number"
+        format: "double"
+      - name: "colorMap"
+        in: "query"
+        description: "Colormap to use for rendering (Default=black/white)"
+        required: false
+        type: "string"
+      - name: "resolution"
+        in: "query"
+        description: "Resolution of image (low,med,actual,high) (Default=actual)"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "PNG image"
+          schema:
+            type: "string"
+            format: "binary"
+      x-swagger-router-controller: "Image"
+  /cubes/{cubeId}/inline:
+    get:
+      tags:
+      - "inline"
+      summary: "Extract an inline from a cube and render it at desired resolution"
+      description: "Extract an inline from a cube and render it at desired resolution"
+      operationId: "cubesCubeIdInlineGET"
+      parameters:
+      - name: "number"
+        in: "query"
+        description: "Inline number to extract"
+        required: true
+        type: "number"
+        format: "integer"
+      - name: "cubeId"
+        in: "path"
+        description: "ID of cube"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Description of plane"
+          schema:
+            $ref: "#/definitions/Plane"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Inline"
+definitions:
+  Cube:
+    type: "object"
+    properties:
+      cubeName:
+        type: "string"
+      cubeId:
+        type: "string"
+      property:
+        type: "string"
+      nInlines:
+        type: number
+        format: integer
+      nCrosslines: 
+        type: number
+        format: integer
+      nSamples:
+        type: number
+        format: integer
+      sampleRate:
+        type: number
+        format: double
+      domain:
+        type: string
+      locationXY:
+        $ref: "#/definitions/Cube_locationXY"
+      annotation:
+        $ref: "#/definitions/Cube_annotation"
+      amplitude:
+        $ref: "#/definitions/Cube_amplitude"
+  Plane:
+    type: "object"
+    properties:
+      cubeId:
+        type: "string"
+      planeType:
+        type: "string"
+      planeNumber:
+        type: "number"
+        format: "double"
+      planeGeometry:
+        $ref: "#/definitions/Geometry"
+      images:
+        $ref: "#/definitions/Plane_images"
+  Geometry:
+    type: "object"
+    properties:
+      translate:
+        $ref: "#/definitions/Geometry_translate"
+      rotation:
+        $ref: "#/definitions/Geometry_rotate"
+  Image:
+    type: "object"
+    properties:
+      width:
+        type: "integer"
+      height:
+        type: "integer"
+      url:
+        type: "string"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"
+  Cube_locationXY:
+    properties:
+      CRS:
+        type: "string"
+        description: "The code for the CRS"
+      originX:
+        type: "number"
+        format: "double"
+      originY:
+        type: "number"
+        format: "double"
+      endFirstInlineX:
+        type: "number"
+        format: "double"
+      endFirstCrosslineX:
+        type: "number"
+        format: "double"
+      endFirstInlineY:
+        type: "number"
+        format: "double"
+      endFirstCrosslineY:
+        type: "number"
+        format: "double"
+  Cube_annotation:
+    properties:
+      minCrossline:
+        type: "number"
+        format: "integer"
+      minInline:
+        type: "number"
+        format: "integer"
+      incInline:
+        type: "number"
+        format: "integer"
+      incCrossline:
+        type: "number"
+        format: "integer"
+      maxInline:
+        type: "number"
+        format: "integer"
+      maxCrossline:
+        type: "number"
+        format: "integer"
+  Cube_amplitude:
+    properties:
+      min:
+        type: "number"
+        format: "double"
+      max:
+        type: "number"
+        format: "double"
+  Plane_images:
+    properties:
+      low_resolution:
+        description: "10 x 10 samples per pixel"
+        $ref: "#/definitions/Image"
+      high_resolution:
+        description: "10x10 zoom of original"
+        $ref: "#/definitions/Image"
+      med_resolution:
+        description: "3 x 3 samples per pixel"
+        $ref: "#/definitions/Image"
+      actual_resolution:
+        description: "1 to 1 mapping of sample to pixel"
+        $ref: "#/definitions/Image"
+  Geometry_translate:
+    properties:
+      x:
+        type: "number"
+      y:
+        type: "number"
+      z:
+        type: "number"
+  Geometry_rotate:
+    properties:
+      x:
+        type: "number"
+      y:
+        type: "number"
+      z:
+        type: "number"      
