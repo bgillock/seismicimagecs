@@ -18,14 +18,30 @@ namespace IO.Swagger.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="Geometry" /> class.
         /// </summary>
+        /// <param name="Width">Width.</param>
+        /// <param name="Height">Height.</param>
         /// <param name="Translate">Translate.</param>
         /// <param name="Rotation">Rotation.</param>
-        public Geometry(GeometryTranslate Translate = null, GeometryRotate Rotation = null)
+        public Geometry(double? Width = null, double? Height = null, GeometryTranslate Translate = null, GeometryRotate Rotation = null)
         {
+            this.Width = Width;
+            this.Height = Height;
             this.Translate = Translate;
             this.Rotation = Rotation;
             
         }
+
+        
+        /// <summary>
+        /// Gets or Sets Width
+        /// </summary>
+        public double? Width { get; set; }
+
+        
+        /// <summary>
+        /// Gets or Sets Height
+        /// </summary>
+        public double? Height { get; set; }
 
         
         /// <summary>
@@ -49,6 +65,8 @@ namespace IO.Swagger.Models
         {
             var sb = new StringBuilder();
             sb.Append("class Geometry {\n");
+            sb.Append("  Width: ").Append(Width).Append("\n");
+            sb.Append("  Height: ").Append(Height).Append("\n");
             sb.Append("  Translate: ").Append(Translate).Append("\n");
             sb.Append("  Rotation: ").Append(Rotation).Append("\n");
             
@@ -91,6 +109,16 @@ namespace IO.Swagger.Models
 
             return 
                 (
+                    this.Width == other.Width ||
+                    this.Width != null &&
+                    this.Width.Equals(other.Width)
+                ) && 
+                (
+                    this.Height == other.Height ||
+                    this.Height != null &&
+                    this.Height.Equals(other.Height)
+                ) && 
+                (
                     this.Translate == other.Translate ||
                     this.Translate != null &&
                     this.Translate.Equals(other.Translate)
@@ -113,6 +141,12 @@ namespace IO.Swagger.Models
             {
                 int hash = 41;
                 // Suitable nullity checks etc, of course :)
+                
+                    if (this.Width != null)
+                    hash = hash * 59 + this.Width.GetHashCode();
+                
+                    if (this.Height != null)
+                    hash = hash * 59 + this.Height.GetHashCode();
                 
                     if (this.Translate != null)
                     hash = hash * 59 + this.Translate.GetHashCode();

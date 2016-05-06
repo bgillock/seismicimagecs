@@ -23,19 +23,21 @@ namespace IO.Swagger.Models
         /// <param name="Property">Property.</param>
         /// <param name="NInlines">NInlines.</param>
         /// <param name="NCrosslines">NCrosslines.</param>
+        /// <param name="StartZ">StartZ.</param>
         /// <param name="NSamples">NSamples.</param>
         /// <param name="SampleRate">SampleRate.</param>
         /// <param name="Domain">Domain.</param>
         /// <param name="LocationXY">LocationXY.</param>
         /// <param name="Annotation">Annotation.</param>
         /// <param name="Amplitude">Amplitude.</param>
-        public Cube(string CubeName = null, string CubeId = null, string Property = null, double? NInlines = null, double? NCrosslines = null, double? NSamples = null, double? SampleRate = null, string Domain = null, CubeLocationXY LocationXY = null, CubeAnnotation Annotation = null, CubeAmplitude Amplitude = null)
+        public Cube(string CubeName = null, string CubeId = null, string Property = null, double? NInlines = null, double? NCrosslines = null, double? StartZ = null, double? NSamples = null, double? SampleRate = null, string Domain = null, CubeLocationXY LocationXY = null, CubeAnnotation Annotation = null, CubeAmplitude Amplitude = null)
         {
             this.CubeName = CubeName;
             this.CubeId = CubeId;
             this.Property = Property;
             this.NInlines = NInlines;
             this.NCrosslines = NCrosslines;
+            this.StartZ = StartZ;
             this.NSamples = NSamples;
             this.SampleRate = SampleRate;
             this.Domain = Domain;
@@ -74,6 +76,12 @@ namespace IO.Swagger.Models
         /// Gets or Sets NCrosslines
         /// </summary>
         public double? NCrosslines { get; set; }
+
+        
+        /// <summary>
+        /// Gets or Sets StartZ
+        /// </summary>
+        public double? StartZ { get; set; }
 
         
         /// <summary>
@@ -126,6 +134,7 @@ namespace IO.Swagger.Models
             sb.Append("  Property: ").Append(Property).Append("\n");
             sb.Append("  NInlines: ").Append(NInlines).Append("\n");
             sb.Append("  NCrosslines: ").Append(NCrosslines).Append("\n");
+            sb.Append("  StartZ: ").Append(StartZ).Append("\n");
             sb.Append("  NSamples: ").Append(NSamples).Append("\n");
             sb.Append("  SampleRate: ").Append(SampleRate).Append("\n");
             sb.Append("  Domain: ").Append(Domain).Append("\n");
@@ -197,6 +206,11 @@ namespace IO.Swagger.Models
                     this.NCrosslines.Equals(other.NCrosslines)
                 ) && 
                 (
+                    this.StartZ == other.StartZ ||
+                    this.StartZ != null &&
+                    this.StartZ.Equals(other.StartZ)
+                ) && 
+                (
                     this.NSamples == other.NSamples ||
                     this.NSamples != null &&
                     this.NSamples.Equals(other.NSamples)
@@ -254,6 +268,9 @@ namespace IO.Swagger.Models
                 
                     if (this.NCrosslines != null)
                     hash = hash * 59 + this.NCrosslines.GetHashCode();
+                
+                    if (this.StartZ != null)
+                    hash = hash * 59 + this.StartZ.GetHashCode();
                 
                     if (this.NSamples != null)
                     hash = hash * 59 + this.NSamples.GetHashCode();

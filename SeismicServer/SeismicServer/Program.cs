@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Diagnostics;
 
-namespace WebServer
+namespace SeismicServer
 {
     using System;
     using System.Net;
@@ -21,9 +21,9 @@ namespace WebServer
     public class WebServer
     {
         private readonly HttpListener _listener = new HttpListener();
-        private readonly Func<HttpListenerRequest, string> _responderMethod;
+        private readonly Func<HttpListenerContext, byte[]> _responderMethod;
 
-        public WebServer(string[] prefixes, Func<HttpListenerRequest, string> method)
+        public WebServer(string[] prefixes, Func<HttpListenerContext, byte[]> method)
         {
             if (!HttpListener.IsSupported)
                 throw new NotSupportedException(
@@ -45,7 +45,7 @@ namespace WebServer
             _listener.Start();
         }
 
-        public WebServer(Func<HttpListenerRequest, string> method, params string[] prefixes)
+        public WebServer(Func<HttpListenerContext, byte[]> method, params string[] prefixes)
             : this(prefixes, method) { }
 
         public void Run()
@@ -62,8 +62,7 @@ namespace WebServer
                             var ctx = c as HttpListenerContext;
                             try
                             {
-                                string rstr = _responderMethod(ctx.Request);
-                                byte[] buf = Encoding.UTF8.GetBytes(rstr);
+                                byte[] buf = _responderMethod(ctx);
                                 ctx.Response.ContentLength64 = buf.Length;
                                 ctx.Response.OutputStream.Write(buf, 0, buf.Length);
                             }
@@ -93,7 +92,7 @@ namespace WebServer
         private static string _seismicRootPath;
         static void Main(string[] args)
         {
-            _seismicRootPath = @"C:\Users\Bill\nodejs\seismicimage\";
+            _seismicRootPath = @"C:\Users\gillock1\nodejs\seismicimages\";
             WebServer ws = new WebServer(SendResponse, "http://localhost:3001/seismic/v1/");
             ws.Run();
             Console.WriteLine("A simple webserver. Press a key to quit.");
@@ -101,8 +100,9 @@ namespace WebServer
             ws.Stop();
         }
 
-        public static string SendResponse(HttpListenerRequest request)
+        public static byte[] SendResponse(HttpListenerContext ctx)
         {
+            HttpListenerRequest request = ctx.Request;
             Debug.WriteLine("request=" + request.Url.ToString());
             string[] parser = request.Url.ToString().Split(new char[] { '/' });
             Debug.WriteLine("n=" + parser.Length);
@@ -110,26 +110,25 @@ namespace WebServer
 
             // Return list of cubes
             if ((parser.Length == 6) && (parser[5] == "cubes"))
-            {
-
+            {          
                 var fileNames = System.IO.Directory.GetFiles(_seismicRootPath);
                 List<Cube> retCubes = new List<Cube>();
                 foreach (var file in fileNames)
                 {
                     Console.WriteLine("file=" + file);
-                    if (System.IO.Path.GetExtension(file) == ".jsz")
+                    if (System.IO.Path.GetExtension(file) == ".bgz")
                     {
                         retCubes.Add(new SeismicFile(file).header);
                     }
                 }
-                return JsonConvert.SerializeObject(retCubes, Formatting.Indented);
+                return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(retCubes, Formatting.Indented));
 
             }
             if ((parser.Length == 7) && (parser[5] == "cubes"))
             {
-                return JsonConvert.SerializeObject(new 
+                return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new 
                        SeismicFile(_seismicRootPath + Path.DirectorySeparatorChar + parser[6]).header,
-                       Formatting.Indented);
+                       Formatting.Indented));
             }
             if ((parser.Length == 8) && (parser[5] == "cubes") && (parser[7].IndexOf("inline") == 0))
             {
@@ -141,20 +140,41 @@ namespace WebServer
                         inlineNumber = Int16.Parse(request.QueryString.Get(key));
                         break;
                     }
-
-                    Debug.WriteLine("Query=" + key + "," + request.QueryString.Get(key));
                 }
-                if (inlineNumber == int.MinValue) return "Invalid line number";
+                if (inlineNumber == int.MinValue) return Encoding.UTF8.GetBytes("Invalid line number");
 
-                var _cube = new SeismicFile(_seismicRootPath + Path.DirectorySeparatorChar + parser[6]);
-                return JsonConvert.SerializeObject(new Plane(_cube.header.CubeId,
+                var _cube = new SeismicFile(_seismicRootPath + Path.DirectorySeparatorChar + parser[6] + ".bgz");
+                return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new Plane(_cube.header.CubeId,
                                                              "Inline",
                                                              inlineNumber,
                                                              _cube.GetGeometry("Inline",inlineNumber),
-                                                             _cube.GetImage());
+                                                             new PlaneImages(
+                                                                _cube.GetImageUrl("Inline",inlineNumber,"BlackWhite","Low"),
+                                                                _cube.GetImageUrl("Inline",inlineNumber,"BlackWhite","Mid"),
+                                                                _cube.GetImageUrl("Inline",inlineNumber,"BlackWhite","Actual"),
+                                                                _cube.GetImageUrl("Inline",inlineNumber,"BlackWhite","High")))));
+                                                                
                 
             }
-            return "";
+            if ((parser.Length == 8) && (parser[5] == "cubes") && (parser[7].IndexOf("image") == 0))
+            {
+                int inlineNumber = int.MinValue;
+                foreach (var key in request.QueryString.AllKeys)
+                {
+                    if (key == "number")
+                    {
+                        inlineNumber = Int16.Parse(request.QueryString.Get(key));
+                    }
+                }
+                if (inlineNumber == int.MinValue) return Encoding.UTF8.GetBytes("Invalid line number");
+
+                var _cube = new SeismicFile(_seismicRootPath + Path.DirectorySeparatorChar + parser[6] + ".bgz");
+                ctx.Response.ContentType = "image/jpeg";
+                return _cube.GetJPEG("Inline", inlineNumber, "BlackWhite", "Actual");
+
+
+            }
+            return Encoding.UTF8.GetBytes("");
         }
     }
 }

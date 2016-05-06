@@ -28,7 +28,7 @@ namespace IO.Swagger.Controllers
         /// <param name="number">Inline, crossline or slice number to extract</param>
         /// <param name="colorMap">Colormap to use for rendering (Default=black/white)</param>
         /// <param name="resolution">Resolution of image (low,med,actual,high) (Default=actual)</param>
-        /// <response code="200">PNG image</response>
+        /// <response code="200">JPEG image</response>
         [HttpGet]
         [Route("/cubes/{cubeId}/image")]
         [SwaggerOperation("CubesCubeIdImageGET")]

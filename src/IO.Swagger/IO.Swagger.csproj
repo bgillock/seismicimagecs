@@ -49,7 +49,6 @@
     <Compile Include="Models\CubeLocationXY.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Geometry.cs" />
-    <Compile Include="Models\GeometryGeometry.cs" />
     <Compile Include="Models\GeometryRotate.cs" />
     <Compile Include="Models\GeometryTranslate.cs" />
     <Compile Include="Models\Image.cs" />

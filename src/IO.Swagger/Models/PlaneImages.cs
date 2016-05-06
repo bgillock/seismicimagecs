@@ -18,10 +18,10 @@ namespace IO.Swagger.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneImages" /> class.
         /// </summary>
-        /// <param name="LowResolution">10 x 10 samples per pixel.</param>
-        /// <param name="HighResolution">10x10 zoom of original.</param>
-        /// <param name="MedResolution">3 x 3 samples per pixel.</param>
-        /// <param name="ActualResolution">1 to 1 mapping of sample to pixel.</param>
+        /// <param name="LowResolution">LowResolution.</param>
+        /// <param name="HighResolution">HighResolution.</param>
+        /// <param name="MedResolution">MedResolution.</param>
+        /// <param name="ActualResolution">ActualResolution.</param>
         public PlaneImages(Image LowResolution = null, Image HighResolution = null, Image MedResolution = null, Image ActualResolution = null)
         {
             this.LowResolution = LowResolution;
@@ -33,30 +33,26 @@ namespace IO.Swagger.Models
 
         
         /// <summary>
-        /// 10 x 10 samples per pixel
+        /// Gets or Sets LowResolution
         /// </summary>
-        /// <value>10 x 10 samples per pixel</value>
         public Image LowResolution { get; set; }
 
         
         /// <summary>
-        /// 10x10 zoom of original
+        /// Gets or Sets HighResolution
         /// </summary>
-        /// <value>10x10 zoom of original</value>
         public Image HighResolution { get; set; }
 
         
         /// <summary>
-        /// 3 x 3 samples per pixel
+        /// Gets or Sets MedResolution
         /// </summary>
-        /// <value>3 x 3 samples per pixel</value>
         public Image MedResolution { get; set; }
 
         
         /// <summary>
-        /// 1 to 1 mapping of sample to pixel
+        /// Gets or Sets ActualResolution
         /// </summary>
-        /// <value>1 to 1 mapping of sample to pixel</value>
         public Image ActualResolution { get; set; }
 
         

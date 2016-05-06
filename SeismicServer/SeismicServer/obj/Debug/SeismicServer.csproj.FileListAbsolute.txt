@@ -8,3 +8,13 @@ C:\Users\Bill\nodejs\seismicimage\aspnet5-server\SeismicServer\SeismicServer\bin
 C:\Users\Bill\nodejs\seismicimage\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Bill\nodejs\seismicimage\aspnet5-server\SeismicServer\SeismicServer\obj\Debug\SeismicServer.exe
 C:\Users\Bill\nodejs\seismicimage\aspnet5-server\SeismicServer\SeismicServer\obj\Debug\SeismicServer.pdb
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\SeismicServer.exe.config
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\obj\Debug\SeismicServer.exe
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\obj\Debug\SeismicServer.csprojResolveAssemblyReference.cache
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\SeismicServer.exe
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\SeismicServer.pdb
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\IO.Swagger.dll
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\IO.Swagger.pdb
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\gillock1\nodejs\seismicimages\aspnet5-server\SeismicServer\SeismicServer\obj\Debug\SeismicServer.pdb
